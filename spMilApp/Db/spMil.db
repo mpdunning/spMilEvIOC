@@ -1,0 +1,154 @@
+
+record(stringin, "$(P):IOC") {
+  field(DESC, "$(LOC)")
+  field(VAL,  "$(IOC)")
+  field(PINI, "1")
+  field(FLNK, "$(P):IDN")
+}
+record(waveform, "$(P):IDN") {
+  field(DESC, "ID string")
+  field(DTYP, "stream")
+  field(NELM, "80")
+  field(FTVL, "CHAR")
+  field(INP,  "@$(PROTOFILE) idn $(PORT)")
+  #field(FLNK, "$(P):STATUS")
+}
+record(waveform, "$(P):STATUS") {
+  field(DESC, "System status string")
+  field(DTYP, "stream")
+  field(NELM, "80")
+  field(FTVL, "CHAR")
+  field(INP,  "@$(PROTOFILE) getStatus $(PORT)")
+  field(PINI, "1")
+  field(SCAN, "2 second")
+  field(FLNK, "$(P):SHUTTER:STATUS")
+}
+record(bi, "$(P):SHUTTER:STATUS") {
+  field(DESC, "Shutter status")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getShutter $(PORT)")
+  field(ZNAM, "CLOSED")
+  field(ONAM, "OPEN")
+  field(ZSV,  "MAJOR")
+  field(OSV,  "NO_ALARM")
+  field(FLNK, "$(P):POWER")
+}
+# Power ---------------------------
+record(ai, "$(P):POWER") {
+  field(DESC, "Emitted power readback")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getPower $(PORT)")
+  field(EGU,  "W")
+  field(PREC, "2")
+  field(HIHI, "8.2")
+  field(HIGH, "7.8")
+  field(LOW,  "5.0")
+  field(LOLO, "4.0")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+  field(FLNK, "$(P):POWER:SETPT")
+}
+record(ai, "$(P):POWER:SETPT") {
+  field(DESC, "Power setpoint")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getPowerSet $(PORT)")
+  field(EGU,  "W")
+  field(PREC, "2")
+  field(FLNK, "$(P):DIODE:STATUS")
+}
+# Diode ---------------------------
+record(bi, "$(P):DIODE:STATUS") {
+  field(DESC, "Diode emission status")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getDiodeState $(PORT)")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+  field(ZSV,  "MAJOR")
+  field(OSV,  "NO_ALARM")
+  field(FLNK, "$(P):DIODE:I")
+}
+record(ai, "$(P):DIODE:I") {
+  field(DESC, "Diode current readback")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getDiodeI $(PORT)")
+  field(EGU,  "A")
+  field(PREC, "2")
+  field(HIHI, "9.5")
+  field(HIGH, "8.5")
+  field(LOW,  "5.0")
+  field(LOLO, "4.0")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+  field(FLNK, "$(P):DIODE:TEMP")
+}
+record(ai, "$(P):DIODE:TEMP") {
+  field(DESC, "Diode temp")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getDiodeTemp $(PORT)")
+  field(EGU,  "C")
+  field(PREC, "2")
+  field(HIHI, "30")
+  field(HIGH, "28")
+  field(LOW,  "16")
+  field(LOLO, "14")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+  field(FLNK, "$(P):DIODE:HOURS")
+}
+record(ai, "$(P):DIODE:HOURS") {
+  field(DESC, "Diode hours")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getDiodeHrs $(PORT)")
+  field(EGU,  "H")
+  field(PREC, "2")
+  field(FLNK, "$(P):BASE:TEMP")
+}
+# Other temps
+record(ai, "$(P):BASE:TEMP") {
+  field(DESC, "Base temp")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getBaseTemp $(PORT)")
+  field(EGU,  "C")
+  field(PREC, "2")
+  field(FLNK, "$(P):SHG:TEMP")
+}
+record(longin, "$(P):SHG:TEMP") {
+  field(DESC, "SHG temp")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getSHGTemp $(PORT)")
+  field(FLNK, "$(P):CHASSIS:TEMP")
+}
+record(ai, "$(P):CHASSIS:TEMP") {
+  field(DESC, "Chassis temp")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getChassTemp $(PORT)")
+  field(EGU,  "C")
+  field(PREC, "2")
+  field(FLNK, "$(P):CT:TEMP")
+}
+record(ai, "$(P):CT:TEMP") {
+  field(DESC, "Crystal tower temp")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getCTTemp $(PORT)")
+  field(EGU,  "C")
+  field(PREC, "2")
+  field(FLNK, "$(P):FEEDBACK:MODE")
+}
+# Misc
+record(bi, "$(P):FEEDBACK:MODE") {
+  field(DESC, "Feedback mode")
+  field(DTYP, "stream")
+  field(INP,  "@$(PROTOFILE) getFeedback $(PORT)")
+  field(ZNAM, "Current")
+  field(ONAM, "Power")
+  #field(FLNK, "$(P):DIODE:I")
+}
+
+
+

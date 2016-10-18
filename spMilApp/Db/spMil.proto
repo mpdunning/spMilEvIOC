@@ -1,0 +1,51 @@
+# Proto file for SP Millennia eV pump laser
+
+locktimeout   = 5000;
+outTerminator = CR;
+inTerminator  = "\n";
+replytimeout  = 1500;
+readtimeout   = 150;
+#extrainput    = Ignore;
+
+idn           {out "*idn?";
+               in  "%80c";
+              }
+getStatus     {out "?F";
+               in  "%80c";
+              }
+getShutter    {out "?SHT";
+               in  "%d";
+              }
+getPower      {out "?P";
+               in  "%f";
+              }
+getPowerSet   {out "?PSET";
+               in  "%f";
+              }
+getDiodeState {out "?D";
+               in  "%d";
+              }
+getDiodeI     {out "?C";
+               in  "%f";
+              }
+getDiodeTemp  {out "?T";
+               in  "%f";
+              }
+getDiodeHrs   {out "?DH";
+               in  "%f";
+              }
+getBaseTemp   {out "?HS";
+               in  "%f";
+              }
+getSHGTemp    {out "?SHG";
+               in  "%d";
+              }
+getChassTemp  {out "?CT";
+               in  "%f";
+              }
+getCTTemp     {out "?TT";
+               in  "%f";
+              }
+getFeedback   {out "?M";
+               in  "%d";
+              }

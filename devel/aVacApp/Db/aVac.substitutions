@@ -1,0 +1,16 @@
+
+file aVacController.template {
+pattern 
+{NONE}
+{NONE}
+}
+
+file aVacCh.template {
+pattern 
+{CH,                        DESC, IHIHI, IHIGH, VHIHI, VHIGH, PHIHI, PHIGH, THIHI, THIGH}
+{ 1, "Click to edit description",  1E-2,  1E-3,  7000,  6000,  1E-5,  1E-6,    45,    40}
+{ 2, "Click to edit description",  1E-2,  1E-3,  7000,  6000,  1E-5,  1E-6,    45,    40}
+{ 3, "Click to edit description",  1E-2,  1E-3,  7000,  6000,  1E-5,  1E-6,    45,    40}
+{ 4, "Click to edit description",  1E-2,  1E-3,  7000,  6000,  1E-5,  1E-6,    45,    40}
+}
+

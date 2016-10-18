@@ -1,0 +1,181 @@
+# Proto file for Agilent 4UHV ion pump controller
+
+locktimeout   = 5000;
+outTerminator = CR;
+#inTerminator  = "";
+replytimeout  = 1500;
+readtimeout   = 150;
+#extrainput    = Ignore;
+
+# Command Format <STX>+<ADDR>+<WIN>+<COM>+<DATA>+<ETX>+<CRC>
+# Where
+#    <OADDR> (Output address) = 0x80 
+#    <IADDR> (Input address)  = 0x80 + device number (0 to 31) 
+#    <WIN> (Window) = string of 3 numeric char indicating the window # ( Ô000Õ #to Ô999Õ)
+#    <COM> (Command) = 0x30 to read the window, 0x31 to write into the window 
+#    <DATA> = an alphanumeric ASCII string with the data to be written into the window. 
+OADDR = 0x80;   
+IADDR = 0x81;   
+RCOM =  0x30;
+WCOM =  0x31;
+
+getModel    {WIN = "319"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%s\_",ETX,"%01<xor>";
+            }
+getStatus   {WIN = "205"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+getError    {WIN = "206"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+getSerial   {WIN = "504"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+getUnits    {WIN = "600"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+setChannel  {WIN = "505"; # 0 = All channels, 1 = Ch1, ...
+                  out STX,$OADDR,$WIN,$WCOM,"%d",ETX,"%01<xor>";
+                  #in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+getFanTemp  {WIN = "800"; # in units of deg C
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+            }
+getIntStat  {WIN = "803"; # ? Not sure what this actually is
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%10c",ETX,"%01<xor>";
+            }
+getOpMode   {WIN = "601"; # ??
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%10c",ETX,"%01<xor>";
+            }
+getProtect  {WIN = "602"; # ??
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%10c",ETX,"%01<xor>";
+            }
+getVoltMode {WIN = "603"; # Fixed or Step mode
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%10c",ETX,"%01<xor>";
+            }
+# Ch1 ---------------------------------------------------------------------
+getHVCh1       {WIN = "011"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getCurrentCh1  {WIN = "811"; # in units of A
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getProtectCh1  {WIN = "614"; # in units of mA
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getVoltageCh1  {WIN = "810"; # in units of V
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getPressureCh1 {WIN = "812"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getTempCh1     {WIN = "801"; # in units of deg C
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getSetPtCh1    {WIN = "615"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+# Ch2 ---------------------------------------------------------------------
+getHVCh2       {WIN = "012"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getCurrentCh2  {WIN = "821"; # in units of A
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getProtectCh2  {WIN = "624"; # in units of mA
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getVoltageCh2  {WIN = "820"; # in units of V
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getPressureCh2 {WIN = "822"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getTempCh2     {WIN = "802"; # in units of deg C
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getSetPtCh2    {WIN = "625"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+# Ch3 ---------------------------------------------------------------------
+getHVCh3       {WIN = "013"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getCurrentCh3  {WIN = "831"; # in units of A
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getProtectCh3  {WIN = "634"; # in units of mA
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getVoltageCh3  {WIN = "830"; # in units of V
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getPressureCh3 {WIN = "832"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getTempCh3     {WIN = "808"; # in units of deg C
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getSetPtCh3    {WIN = "635"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+# Ch4 ---------------------------------------------------------------------
+getHVCh4       {WIN = "014"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getCurrentCh4  {WIN = "841"; # in units of A
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getProtectCh4  {WIN = "644"; # in units of mA
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getVoltageCh4  {WIN = "840"; # in units of V
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getPressureCh4 {WIN = "842"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
+getTempCh4     {WIN = "809"; # in units of deg C
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%d",ETX,"%01<xor>";
+               }
+getSetPtCh4    {WIN = "645"; 
+                  out STX,$OADDR,$WIN,$RCOM,ETX,"%01<xor>";
+                  in  STX,$IADDR,$WIN,$RCOM,"%E",ETX,"%01<xor>";
+               }
